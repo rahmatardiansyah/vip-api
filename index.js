@@ -59,7 +59,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
-    app.listen(3000, () => {
+    app.listen(process.env.PORT || 3000, () => {
       console.log('Connection Success!!!');
     });
   })
