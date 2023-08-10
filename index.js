@@ -10,7 +10,7 @@ const robertRoutes = require('./src/routes/robert');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'images');
+    cb(null, '/tmp');
   },
   filename: (req, file, cb) => {
     // dapatkan id saat mengirim
@@ -34,7 +34,7 @@ const fileFilter = (req, file, cb) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
