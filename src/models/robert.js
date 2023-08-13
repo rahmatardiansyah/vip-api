@@ -5,6 +5,10 @@ const RobertSchema = new Schema({
   image: {
     type: String,
     required: true
+  },
+  'image-grayscale': {
+    type: String,
+    required: true
   }
 });
 

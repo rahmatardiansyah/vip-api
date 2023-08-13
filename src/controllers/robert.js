@@ -1,5 +1,6 @@
 const RobertPost = require('../models/robert');
 const path = require('path');
+const fs = require('fs');
 
 const sharp = require('sharp');
 
@@ -12,35 +13,32 @@ exports.uploadImage = async (req, res, next) => {
 
   const image = req.file.path;
   const pathInfo = path.parse(image);
-  const resizeImage = path.join(
-    pathInfo.dir,
-    `${pathInfo.name}-resized${pathInfo.ext}`
-  );
 
   const grayscaleImage = path.join(
     pathInfo.dir,
     `${pathInfo.name}-grayscale${pathInfo.ext}`
   );
 
+  const resizedGrayscaleImage = path.join(
+    pathInfo.dir,
+    `${pathInfo.name}-resizedGrayscale${pathInfo.ext}`
+  );
+
   try {
-    await sharp(image).resize(7, 7).toFile(resizeImage);
+    // Grayscale
+    await sharp(image).grayscale().toFile(grayscaleImage);
 
-    const originalRGB = await sharp(resizeImage)
-      .ensureAlpha()
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-
-    const originalRGBArray = Array.from(originalRGB.data);
+    // resized
+    await sharp(grayscaleImage).resize(7, 7).toFile(resizedGrayscaleImage);
 
     const Posting = new RobertPost({
-      image: image
+      image: image,
+      'image-grayscale': grayscaleImage
     });
 
     await Posting.save();
 
-    await sharp(resizeImage).grayscale().toFile(grayscaleImage);
-
-    const grayscaleRGB = await sharp(grayscaleImage)
+    const grayscaleRGB = await sharp(resizedGrayscaleImage)
       .raw()
       .toBuffer({ resolveWithObject: true });
 
@@ -48,8 +46,8 @@ exports.uploadImage = async (req, res, next) => {
 
     res.status(201).json({
       message: 'Post Image Sukses',
+      data: Posting,
       dataImage: {
-        originalRgb: originalRGBArray,
         grayscaleRgb: grayscaleRGBArray
       }
     });
