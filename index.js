@@ -10,10 +10,10 @@ const robertRoutes = require('./src/routes/robert');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/tmp');
+    cb(null, '/tmp/vip-images');
+    // cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    // dapatkan id saat mengirim
     cb(null, new Date().getTime() + '-' + file.originalname);
   }
 });
@@ -48,7 +48,6 @@ app.use((req, res, next) => {
 
 app.use('/v1/robert', robertRoutes);
 
-// Memberikan respons error kepada client
 app.use((error, req, res, next) => {
   const status = error.errorStatus || 500; // defaultnya error 500
   const massage = error.message;
@@ -60,7 +59,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
-    app.listen(process.env.PORT || 3000, () => {
+    app.listen(3000, () => {
       console.log('Connection Success!!!');
     });
   })
