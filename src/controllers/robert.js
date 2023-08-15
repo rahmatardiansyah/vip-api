@@ -24,6 +24,11 @@ exports.uploadImage = async (req, res, next) => {
     `${pathInfo.name}-resizedGrayscale${pathInfo.ext}`
   );
 
+  const robertImage = path.join(
+    pathInfo.dir,
+    `${pathInfo.name}-robert${pathInfo.ext}`
+  );
+
   try {
     // Grayscale
     await sharp(image).grayscale().toFile(grayscaleImage);
@@ -42,7 +47,19 @@ exports.uploadImage = async (req, res, next) => {
       .raw()
       .toBuffer({ resolveWithObject: true });
 
-    const grayscaleRGBArray = Array.from(grayscaleRGB.data);
+    const grayscaleRGBArray = [];
+
+    if (grayscaleRGB.info.channels === 4) {
+      let index = 1;
+      grayscaleRGB.data.map(item => {
+        if (index % 4 != 0) grayscaleRGBArray.push(item);
+        index++;
+      });
+    } else {
+      grayscaleRGBArray.push(grayscaleRGB.data);
+    }
+
+    console.log(grayscaleRGB.info.channels);
 
     res.status(201).json({
       message: 'Post Image Sukses',
