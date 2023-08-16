@@ -7,8 +7,8 @@ const fs = require('fs');
 require('dotenv').config();
 
 try {
-  if (!fs.existsSync('/tmp/vip-images')) {
-    fs.mkdirSync('/tmp/vip-images');
+  if (!fs.existsSync('./gambar')) {
+    fs.mkdirSync('./gambar');
   }
 } catch (err) {
   console.error(err);
