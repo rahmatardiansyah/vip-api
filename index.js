@@ -39,10 +39,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+app.use('/tmp/vip-images', express.static(path.join(__dirname, 'vip-images')));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
-app.use('/tmp/vip-images', express.static(path.join(__dirname, 'vip-images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
