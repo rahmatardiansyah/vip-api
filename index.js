@@ -6,13 +6,13 @@ const app = express();
 const fs = require('fs');
 require('dotenv').config();
 
-try {
-  if (!fs.existsSync('./gambar')) {
-    fs.mkdirSync('./gambar');
-  }
-} catch (err) {
-  console.error(err);
-}
+// try {
+//   if (!fs.existsSync('./gambar')) {
+//     fs.mkdirSync('./gambar');
+//   }
+// } catch (err) {
+//   console.error(err);
+// }
 
 const robertRoutes = require('./src/routes/robert');
 
