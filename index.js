@@ -42,7 +42,7 @@ const fileFilter = (req, file, cb) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
-app.use('/tmp', express.static('images'));
+app.use('/tmp', express.static('/tmp/images'));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
