@@ -18,7 +18,7 @@ const robertRoutes = require('./src/routes/robert');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './gambar');
+    cb(null, '/tmp');
   },
   filename: (req, file, cb) => {
     const ext = file.originalname.split('.').pop();
@@ -39,7 +39,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.use('/gambar', express.static(path.join(__dirname, 'gambar')));
+app.use('/tmp', express.static(path.join(__dirname, 'tmp')));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
