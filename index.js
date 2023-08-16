@@ -6,13 +6,13 @@ const app = express();
 const fs = require('fs');
 require('dotenv').config();
 
-// try {
-//   if (!fs.existsSync('./gambar')) {
-//     fs.mkdirSync('./gambar');
-//   }
-// } catch (err) {
-//   console.error(err);
-// }
+try {
+  if (!fs.existsSync('/tmp/images')) {
+    fs.mkdirSync('/tmp/images');
+  }
+} catch (err) {
+  console.error(err);
+}
 
 const robertRoutes = require('./src/routes/robert');
 
@@ -39,10 +39,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.use('/tmp', express.static(path.join(__dirname, 'tmp')));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
+app.use('/tmp/images', express.static(path.join(__dirname, 'images')));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
