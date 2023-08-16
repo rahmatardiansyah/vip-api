@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const path = require('path');
 const app = express();
 const fs = require('fs');
 require('dotenv').config();

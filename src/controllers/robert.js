@@ -1,6 +1,5 @@
 const RobertPost = require('../models/robert');
 const path = require('path');
-const fs = require('fs');
 
 const sharp = require('sharp');
 
@@ -37,19 +36,11 @@ exports.uploadImage = async (req, res, next) => {
     await sharp(grayscaleImage).resize(7, 7).toFile(resizedGrayscaleImage);
 
     const grayscaleRGB = await sharp(resizedGrayscaleImage)
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
 
-    const grayscaleRGBArray = [];
-
-    if (grayscaleRGB.info.channels === 4) {
-      grayscaleRGB.data.map((item, index) => {
-        index++;
-        if (index % 4 != 0) grayscaleRGBArray.push(item);
-      });
-    } else {
-      grayscaleRGBArray.push(...grayscaleRGB.data);
-    }
+    const grayscaleRGBArray = [...grayscaleRGB.data];
 
     // Robert
     const robertImageData = await sharp(grayscaleImage)
