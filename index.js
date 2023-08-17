@@ -14,10 +14,11 @@ try {
 }
 
 const robertRoutes = require('./src/routes/robert');
+const prewittRoutes = require('./src/routes/prewitt');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/tmp');
+    cb(null, '/tmp/images')
   },
   filename: (req, file, cb) => {
     const ext = file.originalname.split('.').pop();
@@ -38,7 +39,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.use('/images', express.static('/tmp'));
+app.use('/images', express.static('/tmp/images'));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
@@ -54,6 +55,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/v1/robert', robertRoutes);
+app.use('/v1/prewitt', prewittRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.errorStatus || 500; // defaultnya error 500
