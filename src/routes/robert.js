@@ -4,6 +4,6 @@ const router = express.Router();
 
 const robertController = require('../controllers/robert');
 
-router.post('/post', robertController.uploadImage);
+router.post('/post', robertController.processImage);
 
 module.exports = router;

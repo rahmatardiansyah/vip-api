@@ -3,7 +3,7 @@ const path = require('path');
 
 const sharp = require('sharp');
 
-exports.uploadImage = async (req, res, next) => {
+exports.processImage = async (req, res, next) => {
   if (!req.file) {
     const err = new Error('Image Harus di Upload');
     err.errorStatus = 422;
@@ -40,7 +40,13 @@ exports.uploadImage = async (req, res, next) => {
       .raw()
       .toBuffer({ resolveWithObject: true });
 
-    const grayscaleRGBArray = [...grayscaleRGB.data];
+    const grayscaleRGBArray = []
+
+    grayscaleRGB.data.map((item, index) => {
+      index += 1
+      if (index % 4 !== 0) grayscaleRGBArray.push(item)
+
+    })
 
     // Robert
     const robertImageData = await sharp(grayscaleImage)
