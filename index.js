@@ -16,6 +16,7 @@ try {
 const robertRoutes = require('./src/routes/robert');
 const prewittRoutes = require('./src/routes/prewitt');
 const sobelRoutes = require('./src/routes/sobel');
+const logRoutes = require('./src/routes/log');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -58,6 +59,7 @@ app.use((req, res, next) => {
 app.use('/v1/robert', robertRoutes);
 app.use('/v1/prewitt', prewittRoutes);
 app.use('/v1/sobel', sobelRoutes);
+app.use('/v1/log', logRoutes);
 
 app.use((error, req, res, next) => {
   const status = error.errorStatus || 500; // defaultnya error 500
