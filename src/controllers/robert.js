@@ -28,6 +28,12 @@ exports.processImage = async (req, res, next) => {
     `${pathInfo.name}-robert${pathInfo.ext}`
   );
 
+  const resImage = path.join(`/images/` + image.split('/').pop());
+  const resImageGrayscale = path.join(
+    `/images/` + grayscaleImage.split('/').pop()
+  );
+  const resImageRobert = path.join(`/images/` + robertImage.split('/').pop());
+
   try {
     // Grayscale
     await sharp(image).grayscale().toFile(grayscaleImage);
@@ -40,13 +46,12 @@ exports.processImage = async (req, res, next) => {
       .raw()
       .toBuffer({ resolveWithObject: true });
 
-    const grayscaleRGBArray = []
+    const grayscaleRGBArray = [];
 
     grayscaleRGB.data.map((item, index) => {
-      index += 1
-      if (index % 4 !== 0) grayscaleRGBArray.push(item)
-
-    })
+      index += 1;
+      if (index % 4 !== 0) grayscaleRGBArray.push(item);
+    });
 
     // Robert
     const robertImageData = await sharp(grayscaleImage)
@@ -88,9 +93,9 @@ exports.processImage = async (req, res, next) => {
     }).toFile(robertImage);
 
     const Posting = new RobertPost({
-      image: image,
-      'image-grayscale': grayscaleImage,
-      'image-robert': robertImage
+      image: resImage,
+      'image-grayscale': resImageGrayscale,
+      'image-robert': resImageRobert
     });
 
     await Posting.save();
