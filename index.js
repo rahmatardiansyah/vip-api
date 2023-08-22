@@ -14,11 +14,11 @@ try {
   console.error(err);
 }
 
-const robertRoutes = require('../src/routes/robert');
-const prewittRoutes = require('../src/routes/prewitt');
-const sobelRoutes = require('../src/routes/sobel');
-const logRoutes = require('../src/routes/log');
-const cannyRoutes = require('../src/routes/canny');
+const robertRoutes = require('./src/routes/robert');
+const prewittRoutes = require('./src/routes/prewitt');
+const sobelRoutes = require('./src/routes/sobel');
+const logRoutes = require('./src/routes/log');
+const cannyRoutes = require('./src/routes/canny');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -38,7 +38,6 @@ const fileFilter = (req, file, cb) => {
   ) {
     // jika sukses terpenuhi kirim null dan true
     cb(null, true);
-    console.log('get image');
   } else {
     cb(null, false);
   }

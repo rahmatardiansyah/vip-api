@@ -35,7 +35,6 @@ exports.processImage = async (req, res, next) => {
   const resImageRobert = path.join(`/images/` + robertImage.split('/').pop());
 
   try {
-    console.log('post');
     // Grayscale
     await sharp(image).grayscale().toFile(grayscaleImage);
 
