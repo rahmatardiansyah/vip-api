@@ -1,6 +1,6 @@
 const RobertPost = require('../models/robert');
 const path = require('path');
-
+const cloudinary = require('./cloudinary');
 const sharp = require('sharp');
 
 exports.processImage = async (req, res, next) => {
@@ -27,12 +27,6 @@ exports.processImage = async (req, res, next) => {
     pathInfo.dir,
     `${pathInfo.name}-robert${pathInfo.ext}`
   );
-
-  const resImage = path.join(`/image/` + image.split('/').pop());
-  const resImageGrayscale = path.join(
-    `/image/` + grayscaleImage.split('/').pop()
-  );
-  const resImageRobert = path.join(`/image/` + robertImage.split('/').pop());
 
   try {
     // Grayscale
@@ -92,10 +86,21 @@ exports.processImage = async (req, res, next) => {
       raw: { width: width, height: height, channels: channel }
     }).toFile(robertImage);
 
+    const imageUpload = [image, grayscaleImage, robertImage];
+    const uploadedUrls = [];
+
+    await (async function run() {
+      for (const i of imageUpload) {
+        const result = await cloudinary.uploader.upload(i);
+        uploadedUrls.push(result.secure_url);
+      }
+    })();
+
+    const [imageURL, grayscaleImageURL, robertImageURL] = uploadedUrls;
     const Posting = new RobertPost({
-      image: resImage,
-      'image-grayscale': resImageGrayscale,
-      'image-robert': resImageRobert
+      image: imageURL,
+      'image-grayscale': grayscaleImageURL,
+      'image-robert': robertImageURL
     });
 
     await Posting.save();
