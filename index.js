@@ -6,10 +6,10 @@ const fs = require('fs');
 require('dotenv').config();
 
 try {
-  if (fs.existsSync('./temp')) {
-    fs.rmSync('./temp', { recursive: true, force: true });
+  if (fs.existsSync('/tmp/vip-images')) {
+    fs.rmSync('/tmp/vip-images', { recursive: true, force: true });
   }
-  fs.mkdirSync('./temp');
+  fs.mkdirSync('/tmp/vip-images');
 } catch (err) {
   console.error(err);
 }
@@ -22,7 +22,7 @@ const cannyRoutes = require('./src/routes/canny');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, './temp');
+    cb(null, '/tmp/vip-images');
   },
   filename: (req, file, cb) => {
     const ext = file.originalname.split('.').pop();
@@ -43,7 +43,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.use('/images', express.static('./temp'));
+app.use('/images', express.static('/tmp/vip-images'));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
