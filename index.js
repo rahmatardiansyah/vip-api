@@ -4,7 +4,9 @@ const multer = require('multer');
 const app = express();
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+
+const dotenv = require('dotenv');
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 try {
   if (fs.existsSync('/tmp/vip-images')) {
