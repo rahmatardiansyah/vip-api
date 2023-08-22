@@ -6,22 +6,23 @@ const fs = require('fs');
 require('dotenv').config();
 
 try {
-  if (!fs.existsSync('/tmp/images')) {
-    fs.mkdirSync('/tmp/images');
+  if (fs.existsSync('./temp')) {
+    fs.rmSync('./temp', { recursive: true, force: true });
   }
+  fs.mkdirSync('./temp');
 } catch (err) {
   console.error(err);
 }
 
-const robertRoutes = require('./src/routes/robert');
-const prewittRoutes = require('./src/routes/prewitt');
-const sobelRoutes = require('./src/routes/sobel');
-const logRoutes = require('./src/routes/log');
-const cannyRoutes = require('./src/routes/canny');
+const robertRoutes = require('../src/routes/robert');
+const prewittRoutes = require('../src/routes/prewitt');
+const sobelRoutes = require('../src/routes/sobel');
+const logRoutes = require('../src/routes/log');
+const cannyRoutes = require('../src/routes/canny');
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, '/tmp/images')
+    cb(null, './temp');
   },
   filename: (req, file, cb) => {
     const ext = file.originalname.split('.').pop();
@@ -37,12 +38,13 @@ const fileFilter = (req, file, cb) => {
   ) {
     // jika sukses terpenuhi kirim null dan true
     cb(null, true);
+    console.log('get image');
   } else {
     cb(null, false);
   }
 };
 
-app.use('/images', express.static('/tmp/images'));
+app.use('/images', express.static('./temp'));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
@@ -71,11 +73,12 @@ app.use((error, req, res, next) => {
   res.status(status).json({ message: massage, data: data });
 });
 
+const port = process.env.PORT || 3000;
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
-    app.listen(3000, () => {
-      console.log('Connection Success!!!');
+    app.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
     });
   })
   .catch(err => {
