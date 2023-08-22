@@ -43,7 +43,8 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-app.use('/images', express.static('/tmp/vip-images'));
+app.use('/image', express.static('/tmp/vip-images'));
+app.use('/images', express.static('images'));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );

@@ -28,11 +28,11 @@ exports.processImage = async (req, res, next) => {
     `${pathInfo.name}-robert${pathInfo.ext}`
   );
 
-  const resImage = path.join(`/images/` + image.split('/').pop());
+  const resImage = path.join(`/image/` + image.split('/').pop());
   const resImageGrayscale = path.join(
-    `/images/` + grayscaleImage.split('/').pop()
+    `/image/` + grayscaleImage.split('/').pop()
   );
-  const resImageRobert = path.join(`/images/` + robertImage.split('/').pop());
+  const resImageRobert = path.join(`/image/` + robertImage.split('/').pop());
 
   try {
     // Grayscale
