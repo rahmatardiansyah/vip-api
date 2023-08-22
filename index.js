@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const app = express();
 const fs = require('fs');
+const path = require('path');
 require('dotenv').config();
 
 try {
@@ -44,7 +45,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 app.use('/image', express.static('/tmp/vip-images'));
-app.use('/images', express.static('images'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
