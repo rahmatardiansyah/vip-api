@@ -91,7 +91,9 @@ exports.processImage = async (req, res, next) => {
 
     await (async function run() {
       for (const i of imageUpload) {
-        const result = await cloudinary.uploader.upload(i);
+        const result = await cloudinary.uploader.upload(i, {
+          folder: 'VIP/Temp'
+        });
         uploadedUrls.push(result.secure_url);
       }
     })();
