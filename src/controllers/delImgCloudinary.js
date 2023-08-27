@@ -3,9 +3,11 @@ const dotenv = require('dotenv');
 dotenv.config({});
 
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 
-cloudinary.api.delete_resources_by_prefix('VIP/Temp');
+exports.deleteImage = () => {
+    return cloudinary.api.delete_resources_by_prefix('VIP/Temp');
+};
