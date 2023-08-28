@@ -82,7 +82,7 @@ app.use((error, req, res, next) => {
     res.status(status).json({ message: massage, data: data });
 });
 
-nodeCron.schedule('*/60 * * * *', deleteImage);
+nodeCron.schedule('*/5 * * * *', deleteImage);
 
 const port = process.env.PORT || 3000;
 mongoose
