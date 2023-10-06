@@ -42,6 +42,7 @@ exports.processImage = async (req, res, next) => {
                 height: Math.round(scaleFactor * 100),
                 fit: 'inside',
             })
+            .rotate()
             .toFile(newImage);
 
         // Grayscale
